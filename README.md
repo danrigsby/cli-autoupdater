@@ -28,10 +28,10 @@ yarn add cli-autoupdater
 ```
 
 ## Usage
-`autoupdater` is called by passing in the "options" object and a Promise is returned. The result is a `boolean` value representing if an update was performed or not.
+`autoupdater` is called by passing in the "options" object and a Promise is returned. The result is a `boolean` value representing if an update was performed or not. So just wrap your application logic with the call to `autoupdater`!
 
 ``` javascript
-autoupdater(require('../package.json');).then((updated) => {
+autoupdater(require('./package.json');).then((updated) => {
   if (updated) {
     // The application was updated, so exit
     console.log('You may rerun the last command');
