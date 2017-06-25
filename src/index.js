@@ -4,7 +4,7 @@ const inquirer = require('inquirer');
 const chalk = require('chalk');
 
 const update = (installCommand, latestVersion) => {
-  console.log(chalk.blue(`Updating...`));
+  console.log(chalk.blue('Updating...'));
   if (shelljs.exec(installCommand).code <= 0) {
     console.log(chalk.green(`Successfully updated to version ${latestVersion}`));
   } else {
@@ -17,16 +17,15 @@ module.exports = ({
     version,
     autoupdater: {
       updateMessage = 'Would you like to update now?',
-      checkCommand = (name, version) => `npm show ${name} version`,
-      installCommand = (name, version) => `npm install -g ${name}`,
+      checkCommand = `npm show ${name} version`,
+      installCommand = `npm install -g ${name}`,
       promptUser = true
     }
-  }) => {
-  return new Promise((resolve, reject) => {
-    const result = shelljs.exec(checkCommand, { silent: true })
+  }) => new Promise((resolve, reject) => {
+    const result = shelljs.exec(checkCommand, { silent: true });
 
     if (!result || result.stderr) {
-      reject(result ? result.stderr.trim() : 'Command did not complete')
+      reject(result ? result.stderr.trim() : 'Command did not complete');
       return;
     }
 
@@ -41,7 +40,7 @@ module.exports = ({
           message: updateMessage,
           type: 'confirm',
           default: true
-          }).then((answers) => {
+        }).then((answers) => {
           if (answers.shouldUpdate === true) {
             update(installCommand, latestVersion);
           }
@@ -55,4 +54,3 @@ module.exports = ({
       resolve(false);
     }
   });
-};
