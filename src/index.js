@@ -3,9 +3,9 @@ const semver = require('semver');
 const inquirer = require('inquirer');
 const chalk = require('chalk');
 
-const update = (installCommand, latestVersion) => {
+const update = (installCommand, latestVersion, commandOptions) => {
   console.log(chalk.blue('Updating...'));
-  if (shelljs.exec(installCommand).code <= 0) {
+  if (shelljs.exec(installCommand, commandOptions).code <= 0) {
     console.log(chalk.green(`Successfully updated to version ${latestVersion}`));
   } else {
     console.log(chalk.red(`Failed to update to version ${latestVersion}`));
@@ -19,10 +19,11 @@ module.exports = ({
       updateMessage = 'Would you like to update now?',
       checkCommand = `npm show ${name} version`,
       installCommand = `npm install -g ${name}`,
-      promptUser = true
+      promptUser = true,
+      commandOptions = { silent: true, timeout: 2000 }
     }
   }) => new Promise((resolve, reject) => {
-    const result = shelljs.exec(checkCommand, { silent: true });
+    const result = shelljs.exec(checkCommand, commandOptions);
 
     if (!result || result.stderr) {
       reject(result ? result.stderr.trim() : 'Command did not complete');
